@@ -1,0 +1,56 @@
+<div class="container">
+    <div class="text-center mt-4">
+        <h1>Order Summary</h1>
+    </div>
+
+    <table class="table table-border w-50 mt-4 mb-5 m-auto">
+        <thead>
+            <tr>
+                <th scope="col">Item</th>
+                <th scope="col">Qty</th>
+                <th scope="col">Unit Price</th>
+                <th scope="col">Amount</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let oneOrder of allOrders" class="mt-2">
+                <td *ngFor="let order of oneOrder" >{{order}}</td>
+                <td type="button" (click)="deleteOrderItem(allOrders.indexOf(oneOrder))" class="btn text-white bg-danger ml-2 mt-1">Delete</td>
+            </tr>
+
+            <tr>
+                <td colspan="4" class="pl-0 ml-0">
+                    <table class="table table-borderless">
+                        <tbody >
+                            <tr>
+                                <td><strong>Subtotal</strong></td>
+                                <td></td>
+                                <td></td>
+                                <td class="pr-3 text-center">&#36;{{subtotal(allOrders)}}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Taxes 7%</strong></td>
+                                <td></td>
+                                <td></td>
+                                <td class="pr-3 text-center">&#36;{{getTax(subtotal(allOrders))}}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Total</strong></td>
+                                <td></td>
+                                <td></td>
+                                <td class="pr-3 text-center">&#36;{{total()}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div *ngIf="userDetails['address'] && userDetails['firstName'] && userDetails['lastName']" class="m-auto w-50">
+        <p class="h3 text-success">Order for {{userDetails['firstName']}} {{userDetails['lastName']}} at {{userDetails['address']}}.</p>
+    </div>
+
+</div>

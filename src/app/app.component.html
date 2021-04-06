@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Homework2</title>
+</head>
+<body>
+  <div class="container">
+    <div class="mb-5 mt-4 w-50 m-auto">
+      <div class="text-center mb-4">
+        <h1>Order Details</h1>
+      </div>
+      <form #userForm="ngForm" (ngSubmit)="onSubmit(userForm)">
+        <div class="input-group w-75 mb-3">
+          <span class="input-group-text">First Name</span>
+          <input type="text"
+                  class="form-control" 
+                  placeholder="Enter your first name here..."
+                  required
+                  pattern="[a-zA-Z']+-*"
+                  name="firstName"
+                  #firstName="ngModel"
+                  [(ngModel)]="newOrder.firstName"
+                  >
+        </div>
+
+        <div class="alert alert-danger w-75" *ngIf="firstName.touched && !firstName.valid">
+          <p *ngIf="firstName?.errors?.required">First name is require.</p>
+          <p *ngIf="firstName?.errors?.pattern">Invalid first names. Try again...</p>
+        </div>
+        
+        <div class="input-group w-75 mb-3">
+          <span class="input-group-text">Last Name</span>
+          <input type="text" 
+                  class="form-control" 
+                  placeholder="Enter your last name here..."
+                  required
+                  pattern="[a-zA-Z']+-*"
+                  name="lastName"
+                  #lastName="ngModel"
+                  [(ngModel)]="newOrder.lastName"
+                  >
+        </div>
+
+        <div class="alert alert-danger w-75" *ngIf="lastName.touched && !lastName.valid">
+          <p *ngIf="lastName?.errors?.required">Last Name is required.</p>
+          <p *ngIf="lastName?.errors?.pattern">Invalid last name. Try again...</p>
+        </div>
+
+        <div class="input-group w-75 mb-3">
+          <span class="input-group-text">Street Address</span>
+          <input type="text" 
+                  class="form-control" 
+                  placeholder="Ex: 123 Oak Street"
+                  required
+                  pattern="^[0-9]+\s[a-zA-Z]+\s[a-zA-Z]+$"
+                  name="address"
+                  id="address"
+                  #address="ngModel"
+                  [(ngModel)]="newOrder.address"
+                  >
+        </div>
+        <div class="position-relative mt-4">
+          <button class="btn btn-primary" type="submit">Submit Address</button>
+          <div class="alert alert-danger position-absolute top-0 left-50" *ngIf="!isInputValid">
+            <p *ngIf="address?.errors?.required">Street address is required.</p>
+            <p *ngIf="address?.errors?.pattern">Invalid street address. Try again...</p>
+          </div>
+        </div>
+      </form>
+
+      <form #summaryForm="ngForm" class="mt-5">
+        <div class="d-flex">
+
+          <div>
+            <div class="input-group">
+              <button class="btn btn-primary" type="submit" (click)="addItem(summaryForm)" [disabled]="!summaryForm.form.valid">Add Item</button>
+              <select class="form-select" 
+                      name="item"
+                      id="item"
+                      required
+                      #item="ngModel"
+                      [(ngModel)]="newOrder.item">
+                <option disabled selected value> -- Select An Item -- </option>
+                <option *ngFor="let item of items" [value]="item">{{item}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="input-group w-25 mb-3 ml-3">
+            <span class="input-group-text">Qty</span>
+            <input type="text" 
+                    class="form-control" 
+                    name="quantity"
+                    pattern="[0-9]+"
+                    required
+                    #quantity="ngModel"
+                    [(ngModel)]="newOrder.quantity"
+                    placeholder="Quantity"
+                    >
+            <div class="alert alert-danger" *ngIf="quantity.touched && !quantity.valid">
+              <p *ngIf="quantity?.errors?.required">Item quantity is required.</p>
+              <p *ngIf="quantity?.errors?.pattern">Invalid item quantity. Try again...</p>
+            </div>
+          </div>
+
+        </div>
+      </form>
+    </div>
+
+    <hr>
+    <div>
+      <orderSummary [allOrders]="allOrders" 
+                    [userDetails]="userDetails">
+      </orderSummary>
+    </div>
+  </div>
+</body>
+</html>
